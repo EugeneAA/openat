@@ -42,8 +42,14 @@ int extract_exec_line(const char *desktop_file_path, char *exec_line)
 
 void replace_placeholder_with_filepath(char *exec_line, const char *filepath)
 {
-    const char *placeholder = "%F";
+    char *placeholder = "%F";
+    char *placeholder_u = "%u";
     char *found = strstr(exec_line, placeholder);
+    if (found == NULL)
+    {
+        found = strstr(exec_line, placeholder_u);
+        placeholder = placeholder_u;
+    }
 
     if (found != NULL)
     {
@@ -116,7 +122,7 @@ int main(int argc, char *argv[])
 
     if (argc < 2)
     {
-        printf("Usage: %s [-t|-e [--nano|--vim|--pico|--vi]] <path-to-file>", argv[0]);
+        printf("Usage: %s [-t|-e [--nano|--vim|--pico|--vi]] <path-to-file>\n", argv[0]);
         return 1;
     }
 
@@ -180,7 +186,7 @@ int main(int argc, char *argv[])
     }
     if (mode == NULL)
     {
-        printf("Usage: %s [-t|-e [--nano|--vim|--pico|--vi]] <path-to-file>", argv[0]);
+        printf("Usage: %s [-t|-e [--nano|--vim|--pico|--vi]] <path-to-file>\n", argv[0]);
         return 1;
     }
 
@@ -224,8 +230,6 @@ int main(int argc, char *argv[])
                 break;
             }
         }
-
-        printf("Editor: %s", editor_choice);
 
         if (editor_choice == NULL)
         {
